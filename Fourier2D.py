@@ -1,22 +1,47 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
-from scipy.fftpack import fft, fftfreq, ifft
+from scipy.fftpack import fft, fftfreq, ifft, fft2, ifft2
+from matplotlib.colors import LogNorm
 
 img=Image.open("Arboles.png")
-array=np.array(img)			#Almacena la imagen como un array
+arreglo=np.array(img)			#Almacena la imagen como un array
 
-#new_img=Image.fromarray(imarr)
-#new_img.save("asdd.png")
+#def fourier_fila(arreglo, fila):
+#	filas=arreglo.shape[0]
+#	cols=arreglo.shape[1]
+#	fourier_ifila=fft(arreglo[fila][:])/cols	#Hace la transformada de fourier de una determinada fila (parametro)
+#	dx=arreglo[fila][1]-arreglo[fila][0]
+#	f_fila=fftfreq(cols,dx)
+#	return(fourier_ifila, f_fila)
+#	
+#def fourier_matriz(arreglo):
+#	filas=arreglo.shape[0]
+#	cols=arreglo.shape[1]
+#	fourier_img=[]
+#	for i in range(filas):
+#		fourier_img.append(fourier_fila(arreglo, i)[0])
+#	return np.array(fourier_img)
 
-def fourier_fila(arreglo, fila):
-	filas=arreglo.shape[0]
-	cols=arreglo.shape[1]
-	for j in range(cols):
-		fourier_ifila=fft(arreglo[fila][j])/cols
-		dx=arreglo[fila][1]-arreglo[fila][0]
-		f_fila=fftfreq(cols,dx)
-	plt.plot(f_fila, abs(fourier_ifila))
-	plt.show()
 
-fourier_fila(array, 1)
+fourier_img=fft2(arreglo)
+fourier_img2=fourier_img.copy()
+
+plt.figure()
+plt.imshow(abs(fourier_img), norm=LogNorm(vmin=1))
+plt.show()
+
+keep_fraction=0.089
+filas=fourier_img2.shape[0]
+cols=fourier_img2.shape[1]
+fourier_img2[int(filas*keep_fraction):int(filas*(1-keep_fraction))]=0
+fourier_img2[:,int(cols*keep_fraction):int(cols*(1-keep_fraction))]=0
+
+plt.figure()
+plt.imshow(abs(fourier_img2), norm=LogNorm(vmin=1))
+plt.show()
+
+nueva=ifft2(fourier_img2).real
+plt.figure()
+plt.imshow(nueva, plt.cm.gray)
+plt.show()

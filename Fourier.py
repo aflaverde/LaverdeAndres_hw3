@@ -1,4 +1,5 @@
 import numpy as np
+import math
 import matplotlib.pyplot as plt
 from scipy.fftpack import fft, fftfreq, ifft
 
@@ -19,23 +20,24 @@ plt.plot(x_sig, y_sig)
 plt.savefig("LaverdeAndres_signal.pdf")
 
 ######FOURIER######
-n_sig=len(x_sig)
-fourier_sig=fft(y_sig)/n_sig #Funcion normalizada con Fourier
-fourier_sig2=fft(y_sig)/n_sig #Otras dos funciones para filtrar las frecuencias requeridas
-fourier_sig3=fft(y_sig)/n_sig 
+def DFT(x,y):
+	N=len(x)
+	suma_F=np.linspace(0,0,N)
+	for n in range(N):
+		for k in range(len(suma_F)):
+			suma_F[n]+=y[k]*(math.e**((-1j)*2*np.pi*k*n/N))
+	return suma_F/N
 
+n_sig=len(x_sig)
 dx_sig=x_sig[1]-x_sig[0]
 f_sig=fftfreq(n_sig, dx_sig) #Frecuencia de los datos
-
-#Figura de la transformada de Fourier
-plt.figure()
-plt.plot(f_sig, abs(fourier_sig))
-plt.xlabel("Frecuencia")
-plt.ylabel("Transformada de Fourier")
-plt.title("Transformada de Fourier de signal.dat")
-plt.xlim(-1000,1000)
-plt.show()
-#plt.savefig("LaverdeAndres_TF.pdf")
 print("Para la grafica de la transformada de Fourier SI se uso el paquete de fftfreq")
+
+FOURIER_DFT=DFT(x_sig,y_sig)
+plt.figure()
+plt.plot(f_sig, abs(FOURIER_DFT))
+plt.show()
+
+
 
 

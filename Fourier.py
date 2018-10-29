@@ -36,8 +36,18 @@ print("Para la grafica de la transformada de Fourier SI se uso el paquete de fft
 FOURIER_DFT=DFT(x_sig,y_sig)
 plt.figure()
 plt.plot(f_sig, abs(FOURIER_DFT))
+plt.savefig("Laverde_Andres_TF.pdf")
+
+######FRECUENCIAS PRINCIPALES###########
+print("Las frecuencias principales de la transformada de Fourier son...")
+
+
+######FILTRADO######
+filter1=1000.0 #Frecuencia a filtrar
+FOURIER_DFT1=DFT(x_sig,y_sig)	#Copia la transformada para modificarla al filtrar las frecuencias menores a 1000Hz
+FOURIER_DFT1[abs(f_sig)>filter1]=0
+plt.figure()
+plt.plot(f_sig, abs(FOURIER_DFT1))
+plt.xlim(-1500,1500)
 plt.show()
-
-
-
 

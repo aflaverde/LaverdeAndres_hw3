@@ -29,13 +29,13 @@ fourier_img2=fourier_img.copy()
 
 plt.figure()
 plt.imshow(abs(fourier_img), norm=LogNorm(vmin=1))
-plt.show()
+plt.savefig("LaverdeAndres_FT2D.pdf")
 
-keep_fraction=0.089
+fraccion=0.089
 filas=fourier_img2.shape[0]
 cols=fourier_img2.shape[1]
-fourier_img2[int(filas*keep_fraction):int(filas*(1-keep_fraction))]=0
-fourier_img2[:,int(cols*keep_fraction):int(cols*(1-keep_fraction))]=0
+fourier_img2[int(filas*fraccion):int(filas*(1-fraccion))]=0
+fourier_img2[:,int(cols*fraccion):int(cols*(1-fraccion))]=0
 
 plt.figure()
 plt.imshow(abs(fourier_img2), norm=LogNorm(vmin=1))
@@ -44,4 +44,4 @@ plt.show()
 nueva=ifft2(fourier_img2).real
 plt.figure()
 plt.imshow(nueva, plt.cm.gray)
-plt.show()
+plt.savefig("LaverdeAndres_Imagen_filtrada.pdf")

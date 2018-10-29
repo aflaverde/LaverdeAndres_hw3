@@ -20,7 +20,9 @@ def covarianza_simetrica(ar,columna):
 	suma=0
 	for i in range(ar.shape[0]):
 		suma+=(ar[i,columna]-np.mean(ar[:,columna]))*(ar[i,columna+1]-np.mean(ar[:,columna+1]))
-	varianza=suma/n
+	covarianza=suma/n
+	return covarianza
+	#Retorna la covarianza de las partes inferior y superior de la diagonal de la matriz
 	
 def covarianza(ar):
 	covar=np.zeros((ar.shape[1],ar.shape[1]))

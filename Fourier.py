@@ -102,7 +102,7 @@ ax3.set_title("Transformada de la interpolacion cubica")
 plt.savefig('LaverdeAndres_TF_interpola.pdf')
 
 ##---->DIFERENCIAS
-print("-->En cuanto a la grafica de la transformada de Fourier de los datos originales se observan frecuencias mucho mayores que los observados en las interpoladas. Los picos de la transformada en los datos originales son mucho mas amplios, mientras que en las funciones interpoladas son locales y definidos para una determinada frecuencia.")
+print("-->En cuanto a la grafica de la transformada de Fourier de los datos originales se observan frecuencias mucho mayores que los observados en las interpoladas. Los picos de la transformada en los datos originales son mucho mas amplios, mientras que en las funciones interpoladas los picos son locales y bien definidos para una determinada frecuencia.")
 
 ######FILTRADO 1000######
 filter1000=1000.0 #Frecuencia a filtrar	

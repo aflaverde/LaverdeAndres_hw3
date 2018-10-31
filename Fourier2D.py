@@ -1,60 +1,54 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from PIL import Image
-from scipy.fftpack import fft, fftfreq, ifft, fft2, ifft2
+from scipy.fftpack import fft, fftfreq, ifft, fft2, ifft2, fftshift, ifftshift
 from matplotlib.colors import LogNorm
 
 #####Almacena la imagen como un array
-img=Image.open("Arboles.png")
-arreglo=np.array(img)			
+img=plt.imread('Arboles.png')
 
-####SOLUCION 1#####
-#Lo que hace esta solucion es una transformada de fourier para cada fila en una funcion a la cual le entra por parametro el indice de la fila. Posteriormente, la funcion es llamada dentro de otra con el numero de fila en un iterado, guardando las transformaciones de Fourier de cada fila en un arreglo matricial del tamaño original de la imagen
-#POSIBLES ERRORES
-# - La matriz no tiene en cuenta la frecuencia de la transformada
-# - No se puede aplicar una escala correcta 
+x=img.shape[0]
+y=img.shape[1]
 
-#def fourier_fila(arreglo, fila):
-#	filas=arreglo.shape[0]
-#	cols=arreglo.shape[1]
-#	fourier_ifila=fft(arreglo[fila,:])/cols	#Hace la transformada de fourier de una determinada fila (dada como parametro)
-#	dx=arreglo[fila][1]-arreglo[fila][0]
-#	f_fila=fftfreq(cols,dx)
-#	return(fourier_ifila, f_fila)
-#	
-#def fourier_matriz(arreglo):
-#	filas=arreglo.shape[0]
-#	cols=arreglo.shape[1]
-#	fourier_img=[]
-#	for i in range(filas):
-#		fourier_img.append(fourier_fila(arreglo, i)[0])
-#	return np.array(fourier_img)
+#Transformada de Fourier bidimensional de la imagen
+fourier_img=fft2(img, axes=(0,1))
 
-#####SOLUCION 2#####--------------------------------------------
-#Hace borrosa la imagen al aplicar una transformacion de Fourier bidimesional (fft2) y le elimina el ruido con esto
+#Cambia la frecuencia 0 al centro del espectro
+shift=fftshift(fourier_img)
 
-fourier_img=fft2(arreglo)
-fourier_img2=fourier_img.copy()
-
+#######IMAGEN TRANSFORMADA DE FOURIER#######
 plt.figure()
-plt.imshow(abs(fourier_img), norm=LogNorm(vmin=1))
+plt.title("Transformada de Fourier 2D de la imagen")
+plt.imshow(np.log(abs(shift)))
 plt.savefig("LaverdeAndres_FT2D.pdf")
 
-fraccion=0.088
-filas=fourier_img2.shape[0]
-cols=fourier_img2.shape[1]
-fourier_img2[int(filas*fraccion):int(filas*(1-fraccion))]=0 #Hace un filtrado para una parte de la imagen
-fourier_img2[:,int(cols*fraccion):int(cols*(1-fraccion))]=0
+#####FILTRADO####
+shift2=fftshift(fourier_img) #Copia la transformada para filtrarla
 
-plt.figure()
-plt.imshow(abs(fourier_img2), norm=LogNorm(vmin=1))
+f_cut1=2200	#Frecuencias de corte, rango de frecuencias
+f_cut2=25000
+
+#Modifica el arreglo copiado de la transformada de fourier para filtrar las frecuencias de ruido
+for i in range(len(shift2)):
+	for j in range(len(shift2)):
+		if shift2[i,j]<=f_cut2 and shift2[i,j]>=f_cut1:
+			shift2[i,j]=0
+		else:
+			shift2[i,j]=shift2[i,j]
+	
+#######IMAGEN TRANSFORMADA DE FOURIER - FILTRADA#######	
+plt.figure()	
+plt.title("Transformada de Fourier filtrada")
+plt.imshow(np.log(abs(shift2)))
 plt.savefig("LaverdeAndres_FT2D_filtrada.pdf")
 
-nueva=ifft2(fourier_img2).real
-plt.figure()
-plt.imshow(nueva, plt.cm.gray)
+###Inversa del shift
+inverse_shift=ifftshift(shift2)
+
+###Inversa de la transformada de fourier para la imagen original
+img_filtrada=ifft2(inverse_shift)
+
+#######IMAGEN FILTRADA - DENOISED#######	
+plt.figure()	
+plt.title("Imagen filtrada")
+plt.imshow(abs(img_filtrada), plt.cm.gray)
 plt.savefig("LaverdeAndres_Imagen_filtrada.pdf")
-
-#Solucion 2 inspirada en
-#https://www.scipy-lectures.org/intro/scipy/auto_examples/solutions/plot_fft_image_denoise.html
-

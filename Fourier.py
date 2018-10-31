@@ -48,7 +48,12 @@ plt.ylabel("Transformada de Fourier")
 plt.savefig("LaverdeAndres_TF.pdf")
 
 ######FRECUENCIAS PRINCIPALES###########
-print("-->Las frecuencias principales de la transformada de Fourier son...")
+frecuencias_main=[]
+for i in range(len(f_sig)):
+	if FOURIER_DFT[i]>0.2:
+		frecuencias_main.append(f_sig[i])	
+
+print("-->Las frecuencias principales de la transformada de Fourier son:", frecuencias_main )
 
 
 ######FILTRADO######

@@ -28,9 +28,9 @@ eig_vecs=np.linalg.eig(covar)[1]
 
 print("--------------EIGENVALUES Y EIGENVECTORS------------")
 for i in range(len(eig_vals)):
-	print("Eigenvalue",i,":",eig_vals[i]," Respectivo Eigenvector:", eig_vecs[i])
+	print("Eigenvalue",i,":",eig_vals[i],"--Respectivo Eigenvector:", eig_vecs[i])
 	
-print("-->")
+print("-->PARAMETROS MAS IMPORTANTES: En cuanto a las componentes de los autovectores es necesario ver como se comporta cada variable respecto a las demas, si es una correlacion positiva o negativa y cual es el grado de correlacion, identificando tanto el valor propio como el valor de la componente de determinada variable.")
 
 ######Proyeccion######
 #Discriminar los datos entre maligno y benigno
@@ -64,4 +64,9 @@ plt.scatter(x_malignos, y_malignos, label="Malignos")
 plt.scatter(x_benignos, y_benignos, label="Benignos")
 plt.legend()
 plt.title("PCA para las 2 componentes principales de los datos")
-plt.show()
+plt.grid()
+plt.xlabel("PCA1")
+plt.ylabel("PCA2")
+plt.savefig("LaverdeAndres_PCA.pdf")
+
+print("-->UTILIDAD DE PCA: El Analisis de Componentes Principales en este caso permite reducir la dimensionalidad de las variables en estudio y proyectarlas en un sistema bidimensional en el que la informacion de las variables no este correlacionada. Para este estudio puede ser util para diagnosticar pacientes que poseen cancer benigno de cancer maligno, ya que los datos de cada tipo de cancer no estan correlacionados y por lo tanto serviria para discriminar el conjunto de datos de pacientes en peligro. En la ultima grafica se ve que hay una correlacion negativa entre las dos principales componentes, y que ademas los pacientes con cancer maligno tienen una susceptibilidad a presentar valores extremos en estas variables, mientras que los pacientes de bajo riesgo poseen valores menos negativos.")

@@ -53,8 +53,7 @@ for i in range(len(f_sig)):
 	if FOURIER_DFT[i]>0.2:
 		frecuencias_main.append(f_sig[i])	
 
-print("-->Las frecuencias principales de la transformada de Fourier son:", frecuencias_main )
-
+print("-->Las frecuencias principales de la transformada de Fourier son:", frecuencias_main[:int(len(frecuencias_main)/2.0)+1] )
 
 ######FILTRADO######
 filter1=1000.0 #Frecuencia a filtrar
@@ -82,7 +81,7 @@ fc=interp1d(x_inc, y_inc, kind='cubic') #interpolacion cubica
 
 xnew=np.linspace(min(x_inc), max(x_inc), 512)
 
-func_quad=fq(xnew)
+func_quad=fq(xnew) #Interpolacion con el nuevo arreglo de 512 datos
 func_cubi=fc(xnew)
 
 dft_orig=DFT(x_inc, y_inc)	#Transformada de Fourier para los datos originales

@@ -24,7 +24,7 @@ plt.savefig("LaverdeAndres_FT2D.pdf")
 #####FILTRADO####
 shift2=fftshift(fourier_img) #Copia la transformada para filtrarla
 
-f_cut1=2200	#Frecuencias de corte, rango de frecuencias
+f_cut1=2200	#Frecuencias de corte. Rango de frecuencias probado para una imagen mas nitida
 f_cut2=25000
 
 #Modifica el arreglo copiado de la transformada de fourier para filtrar las frecuencias de ruido
@@ -36,9 +36,14 @@ for i in range(len(shift2)):
 			shift2[i,j]=shift2[i,j]
 	
 #######IMAGEN TRANSFORMADA DE FOURIER - FILTRADA#######	
+#plt.figure()	
+#plt.title("Transformada de Fourier filtrada")
+#plt.imshow(np.log(abs(shift2)))
+#plt.savefig("LaverdeAndres_FT2D_filtrada.pdf")
+
 plt.figure()	
 plt.title("Transformada de Fourier filtrada")
-plt.imshow(np.log(abs(shift2)))
+plt.imshow(abs(shift2), norm=LogNorm(vmin=1))
 plt.savefig("LaverdeAndres_FT2D_filtrada.pdf")
 
 ###Inversa del shift
